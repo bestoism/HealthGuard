@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">
+                        <i class="bi bi-clipboard2-pulse text-primary me-2"></i>
+                        Pemeriksaan Kesehatan
+                    </h2>
+
+                    <form method="POST" class="needs-validation" novalidate>
+                        <!-- Vital Signs -->
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">
+                                <i class="bi bi-heart-pulse-fill text-danger me-2"></i>
+                                Tanda Vital
+                            </h5>
+                            
+                            <!-- Tekanan Darah -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Tekanan Darah Sistol (mmHg)</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="systolic" required
+                                               min="70" max="200" placeholder="120">
+                                        <span class="input-group-text">mmHg</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tekanan Darah Diastol (mmHg)</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="diastolic" required
+                                               min="40" max="130" placeholder="80">
+                                        <span class="input-group-text">mmHg</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detak Jantung -->
+                            <div class="mb-3">
+                                <label class="form-label">Detak Jantung (bpm)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="heart_rate" required
+                                           min="40" max="200" placeholder="75">
+                                    <span class="input-group-text">bpm</span>
+                                </div>
+                            </div>
+
+                            <!-- Suhu Tubuh -->
+                            <div class="mb-3">
+                                <label class="form-label">Suhu Tubuh (°C)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="temperature" required
+                                           min="35" max="42" step="0.1" placeholder="36.8">
+                                    <span class="input-group-text">°C</span>
+                                </div>
+                            </div>
+
+                            <!-- Gula Darah -->
+                            <div class="mb-3">
+                                <label class="form-label">Gula Darah (mg/dL)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="blood_sugar" required
+                                           min="70" max="400" placeholder="100">
+                                    <span class="input-group-text">mg/dL</span>
+                                </div>
+                            </div>
+
+                            <!-- Berat Badan -->
+                            <div class="mb-3">
+                                <label class="form-label">Berat Badan (kg)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="weight" required
+                                           min="30" max="200" step="0.1" placeholder="65">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Catatan -->
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">
+                                <i class="bi bi-journal-text text-primary me-2"></i>
+                                Catatan Tambahan
+                            </h5>
+                            
+                            <!-- Gejala -->
+                            <div class="mb-3">
+                                <label class="form-label">Gejala yang Dirasakan</label>
+                                <textarea class="form-control" name="symptoms" rows="3" 
+                                          placeholder="Tuliskan gejala yang Anda rasakan (opsional)"></textarea>
+                            </div>
+
+                            <!-- Catatan Lain -->
+                            <div class="mb-3">
+                                <label class="form-label">Catatan Lainnya</label>
+                                <textarea class="form-control" name="notes" rows="3"
+                                          placeholder="Catatan tambahan lainnya (opsional)"></textarea>
+                                </div>
+                            </div>
+
+                        <!-- Tombol Submit -->
+                            <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-5">
+                                <i class="bi bi-check2-circle me-2"></i>Periksa
+                                </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Panduan Nilai Normal -->
+            <div class="card mt-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-info-circle text-info me-2"></i>
+                        Panduan Nilai Normal
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Nilai Normal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tekanan Darah</td>
+                                    <td>120/80 mmHg</td>
+                                </tr>
+                                <tr>
+                                    <td>Detak Jantung</td>
+                                    <td>60-100 bpm</td>
+                                </tr>
+                                <tr>
+                                    <td>Suhu Tubuh</td>
+                                    <td>36.5-37.5 °C</td>
+                                </tr>
+                                <tr>
+                                    <td>Gula Darah (puasa)</td>
+                                    <td>70-100 mg/dL</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

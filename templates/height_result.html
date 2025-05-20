@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-rulers text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="mt-3">Hasil Analisis Tinggi Badan</h2>
+                        <p class="text-muted">Analisis Pertumbuhan dan Tinggi Badan Ideal</p>
+                    </div>
+
+                    <!-- Data Pengukuran -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Tinggi Badan</h6>
+                                    <h2 class="mb-0">{{ height }}</h2>
+                                    <small class="text-muted">cm</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Usia</h6>
+                                    <h2 class="mb-0">{{ age }}</h2>
+                                    <small class="text-muted">tahun</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Jenis Kelamin</h6>
+                                    <h2 class="mb-0">
+                                        <i class="bi {% if gender == 'male' %}bi-gender-male{% else %}bi-gender-female{% endif %}"></i>
+                                    </h2>
+                                    <small class="text-muted">{{ "Laki-laki" if gender == "male" else "Perempuan" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status dan Persentil -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-graph-up text-success me-2"></i>Status Pertumbuhan
+                        </h5>
+                        <div class="alert alert-{{ status_color }} mb-3">
+                            <h6 class="alert-heading">{{ status }}</h6>
+                            <p class="mb-0">{{ description }}</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="mb-1">Persentil Tinggi Badan</p>
+                            <h3 class="text-primary mb-0">{{ percentile }}%</h3>
+                        </div>
+                    </div>
+
+                    <!-- Tinggi Ideal -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-rulers text-primary me-2"></i>Rentang Tinggi Ideal
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col">
+                                <p class="text-muted mb-1">Minimal</p>
+                                <h4>{{ min_height }} cm</h4>
+                            </div>
+                            <div class="col">
+                                <p class="text-muted mb-1">Optimal</p>
+                                <h4>{{ optimal_height }} cm</h4>
+                            </div>
+                            <div class="col">
+                                <p class="text-muted mb-1">Maksimal</p>
+                                <h4>{{ max_height }} cm</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rekomendasi -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-lightbulb text-warning me-2"></i>Rekomendasi
+                        </h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <i class="bi bi-egg-fried text-warning me-2"></i>
+                                Konsumsi makanan bergizi tinggi protein dan kalsium
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-bicycle text-success me-2"></i>
+                                Lakukan olahraga yang merangsang pertumbuhan
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-moon-stars text-primary me-2"></i>
+                                Pastikan tidur cukup 8-10 jam sehari
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-sun text-warning me-2"></i>
+                                Dapatkan paparan sinar matahari yang cukup
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Catatan Penting -->
+                    <div class="alert alert-info mb-4">
+                        <h6 class="alert-heading">
+                            <i class="bi bi-info-circle me-2"></i>Catatan Penting
+                        </h6>
+                        <p class="small mb-0">
+                            Hasil analisis ini bersifat indikatif dan dapat bervariasi tergantung faktor genetik, 
+                            pola makan, dan gaya hidup. Konsultasikan dengan dokter untuk evaluasi lebih lanjut.
+                        </p>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('height_index') }}" class="btn btn-primary">
+                            <i class="bi bi-arrow-repeat me-2"></i>Analisis Ulang
+                        </a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Kembali ke Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    transform: translateX(5px);
+    background-color: rgba(0,0,0,0.02);
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.btn:hover::before {
+    animation: shine 1s forwards;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Kalkulator Height Index</h4>
+                    <p class="text-muted mb-4">Height Index membantu Anda mengetahui apakah tinggi badan Anda sesuai dengan standar berdasarkan usia dan jenis kelamin.</p>
+
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <!-- Usia -->
+                            <div class="col-md-6">
+                                <label class="form-label">Usia</label>
+                                <select class="form-select" name="age" required>
+                                    <option value="">Pilih usia Anda</option>
+                                    {% for age in range(6, 101) %}
+                                        <option value="{{ age }}">{{ age }} tahun</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Silakan pilih usia Anda
+                                </div>
+                            </div>
+
+                            <!-- Jenis Kelamin -->
+                            <div class="col-md-6">
+                                <label class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" name="gender" required>
+                                    <option value="">Pilih jenis kelamin</option>
+                                    <option value="L">Laki-laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Silakan pilih jenis kelamin
+                                </div>
+                            </div>
+
+                            <!-- Tinggi Badan -->
+                            <div class="col-md-12">
+                                <label class="form-label">Tinggi Badan</label>
+                                <select class="form-select" name="height" required>
+                                    <option value="">Pilih tinggi badan</option>
+                                    {% for cm in range(100, 201) %}
+                                        <option value="{{ cm }}">{{ cm }} cm</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Silakan pilih tinggi badan Anda
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Analisis Tinggi Badan</button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Kembali</a>
+                        </div>
+                    </form>
+
+                    <!-- Height Standards -->
+                    <div class="mt-5">
+                        <h5 class="border-bottom pb-2">Standar Tinggi Badan</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Usia</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Tinggi Minimal</th>
+                                        <th>Tinggi Normal</th>
+                                        <th>Tinggi Maksimal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>6-12 tahun</td>
+                                        <td>Laki-laki</td>
+                                        <td>110 cm</td>
+                                        <td>125 cm</td>
+                                        <td>140 cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6-12 tahun</td>
+                                        <td>Perempuan</td>
+                                        <td>110 cm</td>
+                                        <td>125 cm</td>
+                                        <td>140 cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13-17 tahun</td>
+                                        <td>Laki-laki</td>
+                                        <td>145 cm</td>
+                                        <td>160 cm</td>
+                                        <td>175 cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13-17 tahun</td>
+                                        <td>Perempuan</td>
+                                        <td>140 cm</td>
+                                        <td>155 cm</td>
+                                        <td>170 cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>18+ tahun</td>
+                                        <td>Laki-laki</td>
+                                        <td>160 cm</td>
+                                        <td>170 cm</td>
+                                        <td>185 cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>18+ tahun</td>
+                                        <td>Perempuan</td>
+                                        <td>150 cm</td>
+                                        <td>160 cm</td>
+                                        <td>175 cm</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Validation Script -->
+<script>
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

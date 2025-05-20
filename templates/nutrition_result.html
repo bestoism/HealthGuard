@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Hasil Analisis Nutrisi</h2>
+    
+    <div class="row">
+        <!-- Ringkasan Nutrisi -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Total Nutrisi {{ meal_type|title }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="text-muted">Kalori Total</h6>
+                        <h3>{{ total_calories }} kkal</h3>
+                        <span class="badge bg-{{ 'success' if calorie_status == 'Kalori seimbang' else ('warning' if calorie_status == 'Rendah kalori' else 'danger') }}">
+                            {{ calorie_status }}
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-muted">Protein Total</h6>
+                        <h3>{{ total_protein }} g</h3>
+                        <span class="badge bg-{{ 'success' if protein_status == 'Protein seimbang' else ('warning' if protein_status == 'Rendah protein' else 'danger') }}">
+                            {{ protein_status }}
+                        </span>
+                    </div>
+                    <div>
+                        <h6 class="text-muted">Karbohidrat Total</h6>
+                        <h3>{{ total_carbs }} g</h3>
+                        <span class="badge bg-{{ 'success' if carbs_status == 'Karbohidrat seimbang' else ('warning' if carbs_status == 'Rendah karbohidrat' else 'danger') }}">
+                            {{ carbs_status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Makanan -->
+        <div class="col-md-8 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Detail Makanan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Makanan</th>
+                                    <th>Porsi</th>
+                                    <th>Kalori</th>
+                                    <th>Protein</th>
+                                    <th>Karbohidrat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for food in foods %}
+                                <tr>
+                                    <td>{{ food.name }}</td>
+                                    <td>{{ food.portion }} {{ food.unit }}</td>
+                                    <td>{{ food.calories }} kkal</td>
+                                    <td>{{ food.protein }} g</td>
+                                    <td>{{ food.carbs }} g</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rekomendasi -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="card-title mb-0">Rekomendasi</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% if calorie_status == 'Rendah kalori' %}
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-triangle text-warning"></i>
+                    Asupan kalori Anda terlalu rendah. Pertimbangkan untuk menambah porsi makanan atau memilih makanan dengan kalori lebih tinggi.
+                </li>
+                {% elif calorie_status == 'Tinggi kalori' %}
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-triangle text-danger"></i>
+                    Asupan kalori Anda tinggi. Pertimbangkan untuk mengurangi porsi atau memilih makanan dengan kalori lebih rendah.
+                </li>
+                {% endif %}
+
+                {% if protein_status == 'Rendah protein' %}
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-triangle text-warning"></i>
+                    Asupan protein Anda rendah. Tambahkan makanan kaya protein seperti telur, daging, atau kacang-kacangan.
+                </li>
+                {% elif protein_status == 'Tinggi protein' %}
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-triangle text-info"></i>
+                    Asupan protein Anda tinggi. Pastikan untuk minum cukup air untuk membantu metabolisme protein.
+                </li>
+                {% endif %}
+
+                {% if carbs_status == 'Rendah karbohidrat' %}
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-triangle text-warning"></i>
+                    Asupan karbohidrat Anda rendah. Tambahkan sumber karbohidrat seperti nasi, roti, atau kentang.
+                </li>
+                {% elif carbs_status == 'Tinggi karbohidrat' %}
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-triangle text-danger"></i>
+                    Asupan karbohidrat Anda tinggi. Pertimbangkan untuk mengurangi porsi makanan berkarbohidrat.
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center mb-4">
+        <a href="{{ url_for('nutrition') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Tambah Makanan Lain
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+            <i class="bi bi-house"></i> Kembali ke Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

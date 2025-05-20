@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-chat-dots text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="mt-3">Masukan Anda</h2>
+                        <p class="text-muted">Bantu kami meningkatkan layanan Health Guard</p>
+                    </div>
+
+                    <form method="POST" class="needs-validation" novalidate>
+                        <!-- Jenis Masukan -->
+                        <div class="mb-3">
+                            <label class="form-label">Jenis Masukan</label>
+                            <select class="form-select" name="feedback_type" required>
+                                <option value="">Pilih jenis masukan</option>
+                                <option value="suggestion">Saran Pengembangan</option>
+                                <option value="bug">Laporan Bug</option>
+                                <option value="feature">Permintaan Fitur</option>
+                                <option value="other">Lainnya</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Silakan pilih jenis masukan
+                            </div>
+                        </div>
+
+                        <!-- Judul -->
+                        <div class="mb-3">
+                            <label class="form-label">Judul</label>
+                            <input type="text" class="form-control" name="title" required
+                                   placeholder="Ringkasan singkat masukan Anda">
+                            <div class="invalid-feedback">
+                                Silakan isi judul masukan
+                            </div>
+                        </div>
+
+                        <!-- Deskripsi -->
+                        <div class="mb-3">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea class="form-control" name="description" rows="5" required
+                                      placeholder="Jelaskan secara detail masukan Anda"></textarea>
+                            <div class="invalid-feedback">
+                                Silakan isi deskripsi masukan
+                            </div>
+                        </div>
+
+                        <!-- Tingkat Prioritas -->
+                        <div class="mb-3">
+                            <label class="form-label">Tingkat Prioritas</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="priority" id="low" value="low" required>
+                                <label class="btn btn-outline-success" for="low">
+                                    <i class="bi bi-arrow-down-circle me-2"></i>Rendah
+                                </label>
+
+                                <input type="radio" class="btn-check" name="priority" id="medium" value="medium">
+                                <label class="btn btn-outline-warning" for="medium">
+                                    <i class="bi bi-dash-circle me-2"></i>Sedang
+                                </label>
+
+                                <input type="radio" class="btn-check" name="priority" id="high" value="high">
+                                <label class="btn btn-outline-danger" for="high">
+                                    <i class="bi bi-arrow-up-circle me-2"></i>Tinggi
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Screenshot (opsional) -->
+                        <div class="mb-4">
+                            <label class="form-label">Screenshot (opsional)</label>
+                            <input type="file" class="form-control" name="screenshot" accept="image/*">
+                            <div class="form-text">
+                                Unggah gambar untuk membantu menjelaskan masukan Anda (maks. 5MB)
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send me-2"></i>Kirim Masukan
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Kembali
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tips Box -->
+            <div class="card mt-4 shadow-sm border-info">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-lightbulb text-info me-2"></i>Tips Memberikan Masukan
+                    </h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-check2 text-success me-2"></i>
+                            Berikan deskripsi yang jelas dan spesifik
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check2 text-success me-2"></i>
+                            Sertakan langkah-langkah untuk mereproduksi masalah (jika melaporkan bug)
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check2 text-success me-2"></i>
+                            Tambahkan screenshot jika memungkinkan
+                        </li>
+                        <li>
+                            <i class="bi bi-check2 text-success me-2"></i>
+                            Pilih tingkat prioritas yang sesuai
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: all 0.3s ease;
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.btn:hover::before {
+    animation: shine 1s forwards;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+.list-unstyled li {
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.list-unstyled li:hover {
+    background-color: rgba(0,0,0,0.02);
+    transform: translateX(10px);
+}
+</style>
+
+<script>
+// Form Validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %} 

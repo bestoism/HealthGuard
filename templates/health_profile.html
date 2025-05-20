@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Profil Saya</h4>
+                    
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <!-- Foto Profil -->
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                {% if current_user.profile_pic %}
+                                    <img src="{{ url_for('static', filename='uploads/profile_pics/' + current_user.profile_pic) }}" 
+                                         alt="Profile" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% else %}
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center" 
+                                         style="width: 150px; height: 150px;">
+                                        <i class="bi bi-person-fill text-white" style="font-size: 4rem;"></i>
+                                    </div>
+                                {% endif %}
+                                <label for="profile_pic" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2" 
+                                       style="cursor: pointer;">
+                                    <i class="bi bi-camera"></i>
+                                </label>
+                                <input type="file" id="profile_pic" name="profile_pic" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <!-- Data Pribadi -->
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" name="full_name" 
+                                       value="{{ current_user.full_name or '' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tanggal Lahir</label>
+                                <input type="date" class="form-control" name="birth_date" 
+                                       value="{{ current_user.birth_date.strftime('%Y-%m-%d') if current_user.birth_date else '' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" name="gender">
+                                    <option value="">Pilih jenis kelamin</option>
+                                    <option value="male" {% if current_user.gender == 'male' %}selected{% endif %}>Laki-laki</option>
+                                    <option value="female" {% if current_user.gender == 'female' %}selected{% endif %}>Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">No. Telepon</label>
+                                <input type="tel" class="form-control" name="phone" 
+                                       value="{{ current_user.phone or '' }}">
+                            </div>
+
+                            <!-- Data Kesehatan -->
+                            <div class="col-md-6">
+                                <label class="form-label">Tinggi Badan (cm)</label>
+                                <input type="number" class="form-control" name="height" 
+                                       value="{{ current_user.height or '' }}" step="0.1">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Berat Badan (kg)</label>
+                                <input type="number" class="form-control" name="weight" 
+                                       value="{{ current_user.weight or '' }}" step="0.1">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Golongan Darah</label>
+                                <select class="form-select" name="blood_type">
+                                    <option value="">Pilih golongan darah</option>
+                                    <option value="A" {% if current_user.blood_type == 'A' %}selected{% endif %}>A</option>
+                                    <option value="B" {% if current_user.blood_type == 'B' %}selected{% endif %}>B</option>
+                                    <option value="AB" {% if current_user.blood_type == 'AB' %}selected{% endif %}>AB</option>
+                                    <option value="O" {% if current_user.blood_type == 'O' %}selected{% endif %}>O</option>
+                                </select>
+                            </div>
+
+                            <!-- Alamat -->
+                            <div class="col-12">
+                                <label class="form-label">Alamat</label>
+                                <textarea class="form-control" name="address" rows="3">{{ current_user.address or '' }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Kembali</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('profile_pic').addEventListener('change', function(e) {
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.querySelector('.rounded-circle');
+            img.src = e.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    }
+});
+</script>
+{% endblock %}

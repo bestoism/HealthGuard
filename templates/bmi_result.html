@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-clipboard2-pulse text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="mt-3">Hasil Perhitungan BMI</h2>
+                        <p class="text-muted">Body Mass Index (Indeks Massa Tubuh)</p>
+                    </div>
+
+                    <!-- BMI Score -->
+                    <div class="text-center mb-4">
+                        <div class="display-4 mb-2">{{ "%.1f"|format(bmi) }}</div>
+                        <h5 class="mb-0 alert alert-{{ status_color }} d-inline-block px-4 py-2">
+                            {{ status }}
+                        </h5>
+                    </div>
+
+                    <!-- BMI Range Visualization -->
+                    <div class="mb-4">
+                        <div class="progress" style="height: 2rem;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" data-bs-toggle="tooltip" title="Kurus">
+                                < 18.5
+                            </div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" data-bs-toggle="tooltip" title="Normal">
+                                18.5 - 24.9
+                            </div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" data-bs-toggle="tooltip" title="Gemuk">
+                                25 - 29.9
+                            </div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" data-bs-toggle="tooltip" title="Obesitas">
+                                > 30
+                            </div>
+                        </div>
+                        <div class="position-relative mt-1">
+                            <div class="position-absolute" style="left: calc({{ bmi / 40 * 100 }}% - 10px);">
+                                <i class="bi bi-caret-up-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Pengukuran -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Tinggi Badan</h6>
+                                    <h2 class="mb-0">{{ height }}</h2>
+                                    <small class="text-muted">cm</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Berat Badan</h6>
+                                    <h2 class="mb-0">{{ weight }}</h2>
+                                    <small class="text-muted">kg</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Berat Badan Ideal -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-bullseye text-primary me-2"></i>Rentang Berat Badan Ideal
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col">
+                                <p class="text-muted mb-1">Minimal</p>
+                                <h4>{{ min_weight }} kg</h4>
+                            </div>
+                            <div class="col">
+                                <p class="text-muted mb-1">Optimal</p>
+                                <h4>{{ optimal_weight }} kg</h4>
+                            </div>
+                            <div class="col">
+                                <p class="text-muted mb-1">Maksimal</p>
+                                <h4>{{ max_weight }} kg</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rekomendasi -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-lightbulb text-warning me-2"></i>Rekomendasi
+                        </h5>
+                        <ul class="list-group">
+                            {% if bmi < 18.5 %}
+                            <li class="list-group-item">
+                                <i class="bi bi-egg-fried text-warning me-2"></i>
+                                Tingkatkan asupan kalori dan protein
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-calendar2-check text-success me-2"></i>
+                                Makan lebih sering dengan porsi kecil
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-bicycle text-primary me-2"></i>
+                                Lakukan latihan beban untuk membangun massa otot
+                            </li>
+                            {% elif bmi <= 24.9 %}
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Pertahankan pola makan sehat dan seimbang
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-bicycle text-primary me-2"></i>
+                                Lakukan olahraga rutin 30 menit setiap hari
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-cup-hot text-warning me-2"></i>
+                                Jaga hidrasi dengan minum cukup air
+                            </li>
+                            {% else %}
+                            <li class="list-group-item">
+                                <i class="bi bi-calculator text-danger me-2"></i>
+                                Kurangi asupan kalori harian
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-bicycle text-primary me-2"></i>
+                                Tingkatkan aktivitas fisik kardio
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-clock text-warning me-2"></i>
+                                Atur jadwal makan yang teratur
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <!-- Catatan Penting -->
+                    <div class="alert alert-info mb-4">
+                        <h6 class="alert-heading">
+                            <i class="bi bi-info-circle me-2"></i>Catatan Penting
+                        </h6>
+                        <p class="small mb-0">
+                            BMI hanya merupakan salah satu indikator kesehatan. Faktor lain seperti komposisi tubuh, 
+                            aktivitas fisik, dan riwayat kesehatan juga perlu dipertimbangkan. Konsultasikan dengan 
+                            dokter untuk evaluasi lebih lanjut.
+                        </p>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('bmi_calculator') }}" class="btn btn-primary">
+                            <i class="bi bi-arrow-repeat me-2"></i>Hitung Ulang
+                        </a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Kembali ke Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    transform: translateX(5px);
+    background-color: rgba(0,0,0,0.02);
+}
+
+.progress {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: all 0.3s ease;
+}
+
+.progress-bar:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.btn:hover::before {
+    animation: shine 1s forwards;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})
+</script>
+{% endblock %}

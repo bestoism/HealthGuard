@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Aktivitas Fisik</h4>
+                    <p class="text-muted mb-4">Catat aktivitas fisik Anda untuk menghitung perkiraan kalori yang terbakar.</p>
+
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <!-- Jenis Aktivitas -->
+                            <div class="col-md-12">
+                                <label class="form-label">Jenis Aktivitas</label>
+                                <select class="form-select" name="activity" required>
+                                    <option value="">Pilih jenis aktivitas</option>
+                                    <option value="walking">Jalan Kaki</option>
+                                    <option value="running">Lari</option>
+                                    <option value="cycling">Bersepeda</option>
+                                    <option value="swimming">Berenang</option>
+                                    <option value="yoga">Yoga</option>
+                                    <option value="gym">Latihan Beban</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Silakan pilih jenis aktivitas
+                                </div>
+                            </div>
+
+                            <!-- Durasi -->
+                            <div class="col-md-6">
+                                <label class="form-label">Durasi (menit)</label>
+                                <input type="number" class="form-control" name="duration" required min="1" max="480" step="0.1">
+                                <div class="invalid-feedback">
+                                    Masukkan durasi yang valid (1-480 menit)
+                                </div>
+                            </div>
+
+                            <!-- Intensitas -->
+                            <div class="col-md-6">
+                                <label class="form-label">Intensitas</label>
+                                <select class="form-select" name="intensity" required>
+                                    <option value="">Pilih intensitas</option>
+                                    <option value="low">Rendah</option>
+                                    <option value="medium">Sedang</option>
+                                    <option value="high">Tinggi</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Silakan pilih intensitas aktivitas
+                                </div>
+                            </div>
+
+                            <!-- Berat Badan -->
+                            <div class="col-md-12">
+                                <label class="form-label">Berat Badan (kg)</label>
+                                <input type="number" class="form-control" name="weight" required min="1" max="300" step="0.1">
+                                <div class="invalid-feedback">
+                                    Masukkan berat badan yang valid (1-300 kg)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">Hitung Kalori</button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Kembali</a>
+                        </div>
+                    </form>
+
+                    <!-- Info Aktivitas -->
+                    <div class="mt-5">
+                        <h5 class="border-bottom pb-2">Panduan Intensitas Aktivitas</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Intensitas</th>
+                                        <th>Ciri-ciri</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rendah</td>
+                                        <td>Masih bisa berbicara dengan lancar, tidak berkeringat banyak</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sedang</td>
+                                        <td>Nafas mulai berat tapi masih bisa berbicara, berkeringat sedang</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tinggi</td>
+                                        <td>Nafas terengah-engah, sulit berbicara, berkeringat banyak</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Validation Script -->
+<script>
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

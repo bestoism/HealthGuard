@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Card Hover Effects */
+    .category-card {
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    [data-bs-theme="light"] .category-card {
+        background: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    [data-bs-theme="dark"] .category-card {
+        background: #2b3035;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .category-card:hover {
+        transform: translateY(-5px);
+    }
+
+    [data-bs-theme="light"] .category-card:hover {
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-bs-theme="dark"] .category-card:hover {
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Button Shine Effect */
+    .btn-shine {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-shine::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transform: rotate(45deg);
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+
+    .btn-shine:hover::after {
+        animation: shine 1s forwards;
+    }
+
+    @keyframes shine {
+        0% {
+            transform: translateX(-100%) rotate(45deg);
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(100%) rotate(45deg);
+            opacity: 0;
+        }
+    }
+
+    /* Fakta Unik Carousel Style */
+    .facts-carousel {
+        max-width: 1000px;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+        border-radius: 15px;
+        padding: 30px 40px;
+    }
+
+    [data-bs-theme="light"] .facts-carousel {
+        background: #ffffff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    [data-bs-theme="dark"] .facts-carousel {
+        background: #2b3035;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .facts-carousel:hover {
+        transform: translateY(-3px);
+    }
+
+    [data-bs-theme="light"] .facts-carousel:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    [data-bs-theme="dark"] .facts-carousel:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .fact-item {
+        text-align: center;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 200px;
+    }
+
+    .fact-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        background: rgba(var(--bs-primary-rgb), 0.1);
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .fact-item:hover .fact-icon {
+        transform: scale(1.1);
+    }
+
+    .fact-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* Carousel Controls */
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 45px;
+        height: 45px;
+        background: var(--bs-primary);
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        margin: 0 -20px;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        background: var(--bs-primary-darker);
+        opacity: 1 !important;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .facts-carousel:hover .carousel-control-prev,
+    .facts-carousel:hover .carousel-control-next {
+        opacity: 0.8;
+    }
+
+    .carousel-indicators {
+        bottom: -40px;
+    }
+
+    .carousel-indicators button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 6px;
+        background-color: var(--bs-primary);
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-indicators button.active {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    /* Animasi transisi slide */
+    .carousel-item {
+        transition: transform 0.6s ease-in-out;
+    }
+</style>
+
+<div class="container mt-4">
+    <!-- Logo dan judul yang sudah ada -->
+    <div class="text-center mb-3">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Health Guard Logo" class="img-fluid mb-3" style="max-width: 150px;">
+        <h2 class="display-4">Selamat Datang di Health Guard</h2>
+        <p class="lead text-muted">Solusi Pemantauan Kesehatan Pribadi Anda</p>
+    </div>
+
+    <!-- Fakta Unik Carousel -->
+    <div id="factCarousel" class="carousel slide facts-carousel mb-5" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="bi bi-heart-pulse text-danger"></i>
+                    </div>
+                    <p class="fact-text">Tahukah Anda? Jantung manusia berdetak sekitar 100.000 kali sehari, memompa sekitar 7.500 liter darah. Menjaga kesehatan jantung sangat penting untuk kehidupan yang berkualitas.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="bi bi-droplet text-primary"></i>
+                    </div>
+                    <p class="fact-text">60% dari tubuh manusia terdiri dari air. Minum 8 gelas air sehari membantu menjaga kesehatan optimal dan metabolisme tubuh. Air adalah sumber kehidupan!</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="bi bi-brain text-success"></i>
+                    </div>
+                    <p class="fact-text">Otak manusia memproses sekitar 70.000 pikiran setiap hari. Tidur cukup dan meditasi membantu menjaga kesehatan mental dan fungsi kognitif optimal.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="bi bi-lungs text-info"></i>
+                    </div>
+                    <p class="fact-text">Paru-paru manusia dapat menampung hingga 6 liter udara. Bernafas dalam dan teratur membantu meredakan stres dan meningkatkan konsentrasi oksigen dalam darah.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="fact-item">
+                    <div class="fact-icon">
+                        <i class="bi bi-activity text-warning"></i>
+                    </div>
+                    <p class="fact-text">30 menit olahraga setiap hari dapat mengurangi risiko penyakit jantung hingga 40%. Aktivitas fisik teratur adalah kunci hidup sehat dan panjang umur.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#factCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#factCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#factCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#factCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#factCarousel" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#factCarousel" data-bs-slide-to="3"></button>
+            <button type="button" data-bs-target="#factCarousel" data-bs-slide-to="4"></button>
+        </div>
+    </div>
+
+    <!-- Kategori menu dengan efek baru -->
+    {% for category_id, category in categories.items() %}
+    <div class="mb-4">
+        <h3 class="mb-3">
+            <i class="bi {{ category.icon }} text-{{ category.color }} me-2"></i>
+            {{ category.title }}
+        </h3>
+        <div class="row g-4">
+            {% for menu in category.menus %}
+            <div class="col-md-6">
+                <div class="card category-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-{{ menu.color }} bg-opacity-10 p-3 me-3">
+                                <i class="bi {{ menu.icon }} text-{{ menu.color }} fs-4"></i>
+                            </div>
+                            <h4 class="card-title mb-0">{{ menu.name }}</h4>
+                        </div>
+                        <p class="card-text text-muted">{{ menu.description }}</p>
+                        <a href="{{ url_for(menu.url) }}" class="btn btn-{{ menu.color }} rounded-pill px-4 btn-shine">
+                            Buka
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

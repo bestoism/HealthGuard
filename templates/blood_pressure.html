@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Monitor Tekanan Darah</h4>
+                    <p class="text-muted mb-4">Catat dan pantau tekanan darah Anda untuk menjaga kesehatan kardiovaskular.</p>
+
+                    <form method="POST" action="{{ url_for('blood_pressure') }}" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <!-- Systolic -->
+                            <div class="col-md-6">
+                                <label class="form-label">Tekanan Sistol (mmHg)</label>
+                                <input type="number" class="form-control" name="systolic" required min="70" max="200">
+                                <div class="form-text">Angka atas dari pengukuran tekanan darah</div>
+                                <div class="invalid-feedback">
+                                    Masukkan nilai tekanan sistol yang valid (70-200 mmHg)
+                                </div>
+                            </div>
+
+                            <!-- Diastolic -->
+                            <div class="col-md-6">
+                                <label class="form-label">Tekanan Diastol (mmHg)</label>
+                                <input type="number" class="form-control" name="diastolic" required min="40" max="130">
+                                <div class="form-text">Angka bawah dari pengukuran tekanan darah</div>
+                                <div class="invalid-feedback">
+                                    Masukkan nilai tekanan diastol yang valid (40-130 mmHg)
+                                </div>
+                            </div>
+
+                            <!-- Heart Rate -->
+                            <div class="col-md-12">
+                                <label class="form-label">Detak Jantung (bpm)</label>
+                                <input type="number" class="form-control" name="pulse" required min="40" max="200">
+                                <div class="form-text">Jumlah detak jantung per menit</div>
+                                <div class="invalid-feedback">
+                                    Masukkan nilai detak jantung yang valid (40-200 bpm)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Analisis Tekanan Darah</button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Kembali</a>
+                        </div>
+                    </form>
+
+                    <!-- Info Tekanan Darah -->
+                    <div class="mt-5">
+                        <h5 class="border-bottom pb-2">Kategori Tekanan Darah</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Kategori</th>
+                                        <th>Sistol (mmHg)</th>
+                                        <th>Diastol (mmHg)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-success">
+                                        <td>Normal</td>
+                                        <td>90-120</td>
+                                        <td>60-80</td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td>Pre-Hipertensi</td>
+                                        <td>120-139</td>
+                                        <td>80-89</td>
+                                    </tr>
+                                    <tr class="table-danger">
+                                        <td>Hipertensi</td>
+                                        <td>≥140</td>
+                                        <td>≥90</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Validation Script -->
+<script>
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %}

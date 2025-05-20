@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="landing-page">
+    <!-- Hero Section -->
+    <div class="hero py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center text-white">
+                    <h1 class="display-4 fw-bold mb-4">Health Guard</h1>
+                    <p class="lead mb-4">Aplikasi pemantau kesehatan pribadi yang membantu Anda menjalani hidup lebih sehat dengan memantau tanda vital, nutrisi, dan pengingat obat.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ url_for('login') }}" class="btn btn-light btn-lg">Masuk</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg">Daftar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fitur Utama -->
+    <div class="features py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Fitur Utama</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-primary text-white rounded-circle mb-3">
+                                <i class="bi bi-heart-pulse fs-4"></i>
+                            </div>
+                            <h4>Pemantauan Tanda Vital</h4>
+                            <p class="text-muted">Pantau tekanan darah, detak jantung, dan tanda vital lainnya dengan mudah. Lihat tren kesehatan Anda dari waktu ke waktu.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-success text-white rounded-circle mb-3">
+                                <i class="bi bi-egg-fried fs-4"></i>
+                            </div>
+                            <h4>Kalkulator Nutrisi</h4>
+                            <p class="text-muted">Hitung asupan kalori, protein, dan karbohidrat dari makanan Anda. Dapatkan rekomendasi pola makan sehat.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-info text-white rounded-circle mb-3">
+                                <i class="bi bi-bell fs-4"></i>
+                            </div>
+                            <h4>Pengingat Obat</h4>
+                            <p class="text-muted">Atur jadwal minum obat dengan pengingat yang dapat disesuaikan. Tidak akan lupa minum obat lagi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manfaat -->
+    <div class="benefits py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Mengapa Menggunakan Health Guard?</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <div class="feature-icon bg-warning text-white rounded-circle me-3">
+                            <i class="bi bi-graph-up fs-5"></i>
+                        </div>
+                        <div>
+                            <h4>Pantau Kesehatan dengan Mudah</h4>
+                            <p class="text-muted">Lacak kondisi kesehatan Anda secara teratur dan lihat perkembangannya melalui grafik yang informatif.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <div class="feature-icon bg-danger text-white rounded-circle me-3">
+                            <i class="bi bi-shield-check fs-5"></i>
+                        </div>
+                        <div>
+                            <h4>Deteksi Dini</h4>
+                            <p class="text-muted">Kenali tanda-tanda masalah kesehatan sejak dini melalui pemantauan rutin tanda vital.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <div class="feature-icon bg-success text-white rounded-circle me-3">
+                            <i class="bi bi-calendar-check fs-5"></i>
+                        </div>
+                        <div>
+                            <h4>Kelola Jadwal Obat</h4>
+                            <p class="text-muted">Atur dan pantau konsumsi obat Anda dengan pengingat yang dapat disesuaikan.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <div class="feature-icon bg-primary text-white rounded-circle me-3">
+                            <i class="bi bi-person-check fs-5"></i>
+                        </div>
+                        <div>
+                            <h4>Gaya Hidup Sehat</h4>
+                            <p class="text-muted">Dapatkan rekomendasi untuk pola makan sehat dan aktivitas fisik yang sesuai.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="cta py-5">
+        <div class="container text-center">
+            <h2 class="mb-4">Mulai Jaga Kesehatan Anda Sekarang</h2>
+            <p class="lead mb-4">Daftar gratis dan mulai perjalanan menuju hidup yang lebih sehat!</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Daftar Sekarang</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">Masuk</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.landing-page {
+    overflow-x: hidden;
+}
+
+.hero {
+    background: linear-gradient(rgba(13, 110, 253, 0.8), rgba(10, 88, 202, 0.8)), 
+                url("{{ url_for('static', filename='img/health-illustration.png') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.features .card {
+    transition: transform 0.3s ease;
+}
+
+.features .card:hover {
+    transform: translateY(-5px);
+}
+
+.benefits .feature-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 400px;
+    }
+}
+</style>
+{% endblock %} 

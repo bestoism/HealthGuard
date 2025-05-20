@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Guard</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --card-bg: #ffffff;
+            --text-color: #495057;
+            --border-color: rgba(0,0,0,.1);
+        }
+
+        [data-bs-theme="dark"] {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #1a365f 100%);
+            --card-bg: #212529;
+            --text-color: #e9ecef;
+            --border-color: rgba(255,255,255,.1);
+        }
+
+        body {
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-pic-small {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+        }
+        
+        .profile-menu::after {
+            display: none;
+        }
+
+        .navbar {
+            background: var(--primary-gradient);
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            padding: 1rem 0;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            padding: 0.5rem 1.5rem !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link:hover::before {
+            animation: shineEffect 1s forwards;
+        }
+
+        @keyframes shineEffect {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animasi khusus untuk tombol Dashboard */
+        @keyframes dashboardShine {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            background-size: 200% auto;
+            animation: dashboardShine 2s ease infinite;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .dropdown-menu {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.1);
+            padding: 0.5rem 0;
+            background: var(--card-bg);
+        }
+
+        .dropdown-header {
+            padding: 0.75rem 1rem;
+            background: var(--card-bg);
+            border-radius: 10px 10px 0 0;
+            color: var(--text-color);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(30, 60, 114, 0.1);
+            color: #1e3c72;
+        }
+
+        .dropdown-item i {
+            width: 1.25rem;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+
+        .dropdown-divider {
+            margin: 0.25rem 0;
+            border-color: var(--border-color);
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            margin-right: 1rem;
+            color: rgba(255,255,255,0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+        }
+
+        /* Animasi pergantian icon */
+        .theme-toggle i {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: rotate(30deg);
+        }
+
+        /* Emergency Button */
+        .emergency-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff3e3e, #ff0000);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .emergency-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .emergency-btn i {
+            color: white;
+            font-size: 2rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+                transform: scale(1);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+                transform: scale(1);
+            }
+        }
+
+        /* Emergency Modal */
+        .emergency-modal {
+            z-index: 10000;
+        }
+
+        .emergency-modal .modal-content {
+            border: none;
+            border-radius: 15px;
+            background: var(--card-bg);
+        }
+
+        .emergency-modal .modal-header {
+            background: linear-gradient(45deg, #ff3e3e, #ff0000);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border: none;
+        }
+
+        .emergency-modal .modal-body {
+            padding: 2rem;
+        }
+
+        .emergency-action {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 10px;
+            background: rgba(var(--bs-danger-rgb), 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .emergency-action:hover {
+            transform: translateX(10px);
+            background: rgba(var(--bs-danger-rgb), 0.2);
+        }
+
+        .emergency-action i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: #ff3e3e;
+        }
+
+        .emergency-contacts {
+            background: rgba(var(--bs-primary-rgb), 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .emergency-contact-item {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-contact-item:hover {
+            background: rgba(var(--bs-primary-rgb), 0.1);
+        }
+
+        .emergency-contact-item i {
+            margin-right: 0.5rem;
+            color: var(--bs-primary);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('dashboard') }}">
+                <i class="bi bi-shield-plus me-2"></i>
+                Health Guard
+            </a>
+
+            {% if current_user.is_authenticated %}
+            <div class="d-flex align-items-center">
+                <a href="{{ url_for('dashboard') }}" class="nav-link me-3">Dashboard</a>
+                
+                <!-- Dark Mode Toggle -->
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+                
+                <!-- Profile Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-link nav-link profile-menu p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if current_user.profile_pic %}
+                            <img src="{{ url_for('static', filename='uploads/profile_pics/' + current_user.profile_pic) }}" 
+                                 alt="Profile" class="profile-pic-small">
+                        {% else %}
+                            <div class="profile-pic-small d-flex align-items-center justify-content-center bg-secondary">
+                                <i class="bi bi-person-fill text-white" style="font-size: 1.5rem;"></i>
+                            </div>
+                        {% endif %}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <div class="dropdown-header">
+                                <strong>{{ current_user.username }}</strong>
+                                <br>
+                                <small class="text-muted">{{ current_user.email }}</small>
+                            </div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('health_profile') }}">
+                                <i class="bi bi-person me-2"></i>Profil Saya
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('health_records') }}">
+                                <i class="bi bi-journal-medical me-2"></i>Riwayat Kesehatan
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('medicine_reminder') }}">
+                                <i class="bi bi-bell me-2"></i>Pengingat Obat
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('about') }}">
+                                <i class="bi bi-info-circle me-2"></i>Tentang Aplikasi
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('feedback') }}">
+                                <i class="bi bi-chat-dots me-2"></i>Masukan
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('active_reminders') }}">
+                                <i class="bi bi-bell me-2"></i>Pengingat Obat Aktif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+<!-- bestoisme :) -->
+    
+    <!-- Dark Mode Script -->
+    <script>
+        // Fungsi untuk menerapkan tema
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            const icon = document.querySelector('#themeToggle i');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+            }
+        }
+
+        // Fungsi untuk menginisialisasi tema
+        function initializeTheme() {
+            // Cek tema yang tersimpan di localStorage
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+        }
+
+        // Panggil inisialisasi tema saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+
+            // Event listener untuk tombol toggle
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    applyTheme(newTheme);
+                });
+            }
+        });
+
+        // Panggil inisialisasi tema segera untuk mencegah flash of unstyled content
+        initializeTheme();
+    </script>
+
+    <!-- Emergency Button -->
+    <button class="emergency-btn" data-bs-toggle="modal" data-bs-target="#emergencyModal" title="Emergency Button">
+        <i class="bi bi-plus-circle-fill"></i>
+    </button>
+
+    <!-- Emergency Modal -->
+    <div class="modal fade emergency-modal" id="emergencyModal" tabindex="-1" aria-labelledby="emergencyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emergencyModalLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Bantuan Darurat
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Tindakan Cepat</h6>
+                            <a href="tel:119" class="emergency-action">
+                                <i class="bi bi-telephone-fill"></i>
+                                <div>
+                                    <strong>Ambulans</strong>
+                                    <p class="mb-0">119</p>
+                                </div>
+                            </a>
+                            <a href="tel:112" class="emergency-action">
+                                <i class="bi bi-shield-fill-check"></i>
+                                <div>
+                                    <strong>Nomor Darurat Nasional</strong>
+                                    <p class="mb-0">112</p>
+                                </div>
+                            </a>
+                            <a href="#" class="emergency-action" onclick="getLocation()">
+                                <i class="bi bi-hospital-fill"></i>
+                                <div>
+                                    <strong>Rumah Sakit Terdekat</strong>
+                                    <p class="mb-0">Temukan lokasi</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Kontak Darurat</h6>
+                            <div class="emergency-contacts">
+                                <div class="emergency-contact-item">
+                                    <i class="bi bi-person-fill"></i>
+                                    <div>
+                                        <strong>Dokter Jaga</strong>
+                                        <p class="mb-0">0812-3456-7890</p>
+                                    </div>
+                                </div>
+                                <div class="emergency-contact-item">
+                                    <i class="bi bi-heart-pulse-fill"></i>
+                                    <div>
+                                        <strong>Poliklinik 24 Jam</strong>
+                                        <p class="mb-0">0812-3456-7891</p>
+                                    </div>
+                                </div>
+                                <div class="emergency-contact-item">
+                                    <i class="bi bi-capsule"></i>
+                                    <div>
+                                        <strong>Apotek 24 Jam</strong>
+                                        <p class="mb-0">0812-3456-7892</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h6 class="mb-3">Panduan Pertolongan Pertama</h6>
+                        <div class="accordion" id="firstAidGuide">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstAid1">
+                                        Penanganan Serangan Jantung
+                                    </button>
+                                </h2>
+                                <div id="firstAid1" class="accordion-collapse collapse" data-bs-parent="#firstAidGuide">
+                                    <div class="accordion-body">
+                                        <ol>
+                                            <li>Hubungi bantuan medis segera (119)</li>
+                                            <li>Bantu korban untuk duduk dan tenang</li>
+                                            <li>Longgarkan pakaian yang ketat</li>
+                                            <li>Jika tersedia, berikan aspirin</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstAid2">
+                                        Penanganan Luka Bakar
+                                    </button>
+                                </h2>
+                                <div id="firstAid2" class="accordion-collapse collapse" data-bs-parent="#firstAidGuide">
+                                    <div class="accordion-body">
+                                        <ol>
+                                            <li>Dinginkan area luka dengan air mengalir</li>
+                                            <li>Jangan gunakan es langsung</li>
+                                            <li>Tutup dengan perban steril</li>
+                                            <li>Segera ke rumah sakit</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Script -->
+    <script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                window.open(`https://www.google.com/maps/search/rumah+sakit/@${latitude},${longitude},14z`, '_blank');
+            });
+        } else {
+            alert('Geolocation tidak didukung di browser Anda');
+        }
+    }
+    </script>
+</body>
+</html> 

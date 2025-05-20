@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Kalkulator Nutrisi Makanan</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('nutrition') }}">
+                <div class="mb-3">
+                    <label for="meal_type" class="form-label">Jenis Makan</label>
+                    <select class="form-select" id="meal_type" name="meal_type" required>
+                        <option value="sarapan">Sarapan</option>
+                        <option value="makan_siang">Makan Siang</option>
+                        <option value="makan_malam">Makan Malam</option>
+                        <option value="camilan">Camilan</option>
+                    </select>
+                </div>
+
+                <div id="food-items">
+                    <div class="food-item mb-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Pilih Makanan</label>
+                                <select class="form-select" name="food_items[]" required>
+                                    <option value="">Pilih makanan...</option>
+                                    {% for food_id, food_name, unit in foods %}
+                                    <option value="{{ food_id }}">{{ food_name }} (per {{ unit }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Jumlah Porsi</label>
+                                <input type="number" class="form-control" name="portions[]" step="0.5" min="0.5" required>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger remove-food" style="display: none;">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary mb-3" id="add-food">
+                    <i class="bi bi-plus-circle"></i> Tambah Makanan
+                </button>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-calculator"></i> Hitung Nutrisi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const foodItems = document.getElementById('food-items');
+    const addFoodBtn = document.getElementById('add-food');
+    
+    // Tampilkan tombol hapus pada item pertama jika ada lebih dari satu item
+    function updateRemoveButtons() {
+        const items = foodItems.getElementsByClassName('food-item');
+        for (let i = 0; i < items.length; i++) {
+            const removeBtn = items[i].querySelector('.remove-food');
+            removeBtn.style.display = items.length > 1 ? 'block' : 'none';
+        }
+    }
+    
+    // Tambah makanan baru
+    addFoodBtn.addEventListener('click', function() {
+        const newItem = foodItems.children[0].cloneNode(true);
+        newItem.querySelector('select').value = '';
+        newItem.querySelector('input').value = '';
+        foodItems.appendChild(newItem);
+        updateRemoveButtons();
+    });
+    
+    // Hapus makanan
+    foodItems.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-food')) {
+            e.target.closest('.food-item').remove();
+            updateRemoveButtons();
+        }
+    });
+});
+</script>
+{% endblock %}

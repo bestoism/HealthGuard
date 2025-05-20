@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Hasil Pemeriksaan Kesehatan</h2>
+    
+    <div class="row">
+        <!-- Tekanan Darah -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-{{ bp_color }}">
+                <div class="card-header bg-{{ bp_color }} text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-heart-pulse me-2"></i>
+                        Tekanan Darah
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ record.blood_pressure_systolic }}/{{ record.blood_pressure_diastolic }} mmHg</h3>
+                    <p class="mb-2"><strong>Status:</strong> {{ bp_status }}</p>
+                    <p class="mb-0"><strong>Saran:</strong> {{ bp_advice }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detak Jantung -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-{{ hr_color }}">
+                <div class="card-header bg-{{ hr_color }} text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-activity me-2"></i>
+                        Detak Jantung
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ record.heart_rate }} BPM</h3>
+                    <p class="mb-2"><strong>Status:</strong> {{ hr_status }}</p>
+                    <p class="mb-0"><strong>Saran:</strong> {{ hr_advice }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suhu Tubuh -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-{{ temp_color }}">
+                <div class="card-header bg-{{ temp_color }} text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-thermometer-half me-2"></i>
+                        Suhu Tubuh
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ record.temperature }}°C</h3>
+                    <p class="mb-2"><strong>Status:</strong> {{ temp_status }}</p>
+                    <p class="mb-0"><strong>Saran:</strong> {{ temp_advice }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gula Darah -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-{{ bs_color }}">
+                <div class="card-header bg-{{ bs_color }} text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-droplet me-2"></i>
+                        Gula Darah
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ record.blood_sugar }} mg/dL</h3>
+                    <p class="mb-2"><strong>Status:</strong> {{ bs_status }}</p>
+                    <p class="mb-0"><strong>Saran:</strong> {{ bs_advice }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informasi Tambahan -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Informasi Tambahan</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Berat Badan:</strong> {{ record.weight }} kg</p>
+                    <p><strong>Tanggal Pemeriksaan:</strong> {{ record.record_date.strftime('%d/%m/%Y %H:%M') }}</p>
+                </div>
+                <div class="col-md-6">
+                    {% if record.symptoms %}
+                    <p><strong>Gejala:</strong> {{ record.symptoms }}</p>
+                    {% endif %}
+                    {% if record.notes %}
+                    <p><strong>Catatan:</strong> {{ record.notes }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="mt-4 text-center">
+        <a href="{{ url_for('health_check_form') }}" class="btn btn-primary me-2">
+            <i class="bi bi-plus-circle me-2"></i>Pemeriksaan Baru
+        </a>
+        <a href="{{ url_for('health_records') }}" class="btn btn-secondary">
+            <i class="bi bi-clock-history me-2"></i>Lihat Riwayat
+        </a>
+    </div>
+</div>
+{% endblock %} 

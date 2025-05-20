@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Pengingat Obat Aktif</h2>
+    
+    {% if reminders %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nama Obat</th>
+                    <th>Dosis</th>
+                    <th>Frekuensi</th>
+                    <th>Waktu</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reminder in reminders %}
+                <tr>
+                    <td>{{ reminder.medicine_name }}</td>
+                    <td>{{ reminder.dosage }}</td>
+                    <td>{{ reminder.frequency }}</td>
+                    <td>{{ reminder.time.replace(',', ', ') }}</td>
+                    <td>{{ reminder.start_date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ reminder.end_date.strftime('%d/%m/%Y') }}</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ reminder.id }}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <a href="{{ url_for('delete_reminder', id=reminder.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus pengingat ini?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Modal Edit untuk setiap pengingat -->
+                <div class="modal fade" id="editModal{{ reminder.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Pengingat Obat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ url_for('edit_reminder', id=reminder.id) }}" method="POST">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama Obat</label>
+                                        <input type="text" class="form-control" name="medicine_name" value="{{ reminder.medicine_name }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Dosis</label>
+                                        <input type="text" class="form-control" name="dosage" value="{{ reminder.dosage }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Frekuensi</label>
+                                        <input type="text" class="form-control" name="frequency" value="{{ reminder.frequency }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Waktu (HH:MM)</label>
+                                        {% for time in reminder.time.split(',') %}
+                                        <input type="time" class="form-control mb-2" name="times[]" value="{{ time }}" required>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Tanggal Mulai</label>
+                                        <input type="date" class="form-control" name="start_date" value="{{ reminder.start_date }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Tanggal Selesai</label>
+                                        <input type="date" class="form-control" name="end_date" value="{{ reminder.end_date }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Catatan</label>
+                                        <textarea class="form-control" name="notes">{{ reminder.notes }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Tidak ada pengingat obat yang aktif saat ini.
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

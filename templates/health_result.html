@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title text-center mb-4">Hasil Pemeriksaan Kesehatan</h4>
+                    
+                    <!-- Status Kesehatan -->
+                    <div class="alert 
+                        {% if analysis.severity == 'danger' %}
+                            alert-danger
+                        {% elif analysis.severity == 'warning' %}
+                            alert-warning
+                        {% else %}
+                            alert-success
+                        {% endif %} mb-4">
+                        <h5 class="alert-heading">
+                            <i class="bi 
+                                {% if analysis.severity == 'danger' %}
+                                    bi-exclamation-triangle
+                                {% elif analysis.severity == 'warning' %}
+                                    bi-exclamation-circle
+                                {% else %}
+                                    bi-check-circle
+                                {% endif %} me-2"></i>
+                            Status Kesehatan:
+                            {% if analysis.severity == 'danger' %}
+                                Perlu Perhatian Segera
+                            {% elif analysis.severity == 'warning' %}
+                                Perlu Perhatian
+                            {% else %}
+                                Baik
+                            {% endif %}
+                        </h5>
+                    </div>
+
+                    <!-- Data Vital -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2">Data Vital</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1 text-muted">BMI</p>
+                            <h6>{{ "%.1f"|format(analysis.bmi) }} ({{ analysis.bmi_category }})</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1 text-muted">Tekanan Darah</p>
+                            <h6>{{ data.systolic }}/{{ data.diastolic }} mmHg</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1 text-muted">Detak Jantung</p>
+                            <h6>{{ data.heart_rate }} bpm</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1 text-muted">Suhu Tubuh</p>
+                            <h6>{{ data.temperature }}°C</h6>
+                        </div>
+                    </div>
+
+                    <!-- Kondisi Kesehatan -->
+                    {% if analysis.conditions %}
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">Kondisi yang Perlu Diperhatikan</h5>
+                        <ul class="list-group">
+                            {% for condition in analysis.conditions %}
+                            <li class="list-group-item">
+                                <i class="bi bi-exclamation-circle text-warning me-2"></i>
+                                {{ condition }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <!-- Rekomendasi -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">Rekomendasi</h5>
+                        {% if analysis.recommendations %}
+                        <ul class="list-group">
+                            {% for rec in analysis.recommendations %}
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                {{ rec }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Hasil pemeriksaan ini hanya bersifat indikatif. Untuk diagnosis yang lebih akurat, 
+                            silakan konsultasi dengan dokter.
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('health_check_form') }}" class="btn btn-primary">Periksa Ulang</a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Kembali ke Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

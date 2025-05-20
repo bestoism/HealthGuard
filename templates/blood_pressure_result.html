@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Hasil Analisis Tekanan Darah</h4>
+                    
+                    <!-- Data Pengukuran -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Tekanan Sistol</h6>
+                                    <h2 class="mb-0">{{ record.blood_pressure_systolic }}</h2>
+                                    <small class="text-muted">mmHg</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Tekanan Diastol</h6>
+                                    <h2 class="mb-0">{{ record.blood_pressure_diastolic }}</h2>
+                                    <small class="text-muted">mmHg</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Detak Jantung</h6>
+                                    <h2 class="mb-0">{{ record.heart_rate }}</h2>
+                                    <small class="text-muted">bpm</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kategori dan Saran -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} mb-3">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Rekomendasi Umum -->
+                    <div class="mt-4">
+                        <h5 class="mb-3">Rekomendasi Umum</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <i class="bi bi-heart-pulse me-2 text-danger"></i>
+                                Pantau tekanan darah Anda secara teratur
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-egg-fried me-2 text-warning"></i>
+                                Kurangi konsumsi garam dan makanan berlemak
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-bicycle me-2 text-success"></i>
+                                Lakukan aktivitas fisik minimal 30 menit sehari
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-emoji-smile me-2 text-primary"></i>
+                                Kelola stres dengan baik
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-clock-history me-2 text-info"></i>
+                                Jaga pola tidur yang teratur
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{{ url_for('blood_pressure') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>Pengukuran Baru
+                        </a>
+                        <a href="{{ url_for('health_records') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-journal-medical me-2"></i>Lihat Riwayat
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    transform: translateX(5px);
+    background-color: rgba(0,0,0,0.02);
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.btn:hover::before {
+    animation: shine 1s forwards;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+</style>
+{% endblock %}

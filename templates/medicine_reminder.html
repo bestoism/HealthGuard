@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Pengingat Obat</h2>
+
+    <!-- Form Tambah Pengingat -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Tambah Pengingat Obat Baru</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('medicine_reminder') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nama Obat</label>
+                        <input type="text" class="form-control" name="medicine_name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="text" class="form-control" name="dosage" placeholder="Contoh: 1 tablet" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Frekuensi</label>
+                        <select class="form-select" name="frequency" id="frequency" required>
+                            <option value="1x sehari">1x sehari</option>
+                            <option value="2x sehari">2x sehari</option>
+                            <option value="3x sehari">3x sehari</option>
+                            <option value="4x sehari">4x sehari</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Waktu Minum</label>
+                        <div id="time-inputs">
+                            <input type="time" class="form-control mb-2" name="times[]" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tanggal Mulai</label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tanggal Selesai</label>
+                        <input type="date" class="form-control" name="end_date" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Catatan</label>
+                    <textarea class="form-control" name="notes" rows="2"></textarea>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Tambah Pengingat
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Daftar Pengingat -->
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h5 class="card-title mb-0">Daftar Pengingat Obat Aktif</h5>
+        </div>
+        <div class="card-body">
+            {% if reminders %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Obat</th>
+                            <th>Dosis</th>
+                            <th>Frekuensi</th>
+                            <th>Waktu</th>
+                            <th>Periode</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reminder in reminders %}
+                        <tr>
+                            <td>{{ reminder.medicine_name }}</td>
+                            <td>{{ reminder.dosage }}</td>
+                            <td>{{ reminder.frequency }}</td>
+                            <td>{{ reminder.time.replace(',', ', ') }}</td>
+                            <td>{{ reminder.start_date.strftime('%d/%m/%Y') }} - {{ reminder.end_date.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editReminder({{ reminder.id }}, '{{ reminder.medicine_name }}', '{{ reminder.dosage }}', '{{ reminder.frequency }}', '{{ reminder.time }}', '{{ reminder.start_date }}', '{{ reminder.end_date }}', '{{ reminder.notes|default('', true) }}')">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <a href="{{ url_for('delete_reminder', id=reminder.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus pengingat ini?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="bi bi-calendar-x display-4 text-muted"></i>
+                <p class="mt-3">Belum ada pengingat obat yang aktif.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Pengingat Obat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Obat</label>
+                        <input type="text" class="form-control" name="medicine_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="text" class="form-control" name="dosage" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Frekuensi</label>
+                        <select class="form-select" name="frequency" required>
+                            <option value="1x sehari">1x sehari</option>
+                            <option value="2x sehari">2x sehari</option>
+                            <option value="3x sehari">3x sehari</option>
+                            <option value="4x sehari">4x sehari</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Waktu Minum</label>
+                        <div id="edit-time-inputs">
+                            <input type="time" class="form-control mb-2" name="times[]" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Mulai</label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Selesai</label>
+                        <input type="date" class="form-control" name="end_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Catatan</label>
+                        <textarea class="form-control" name="notes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle perubahan frekuensi
+    const frequencySelect = document.getElementById('frequency');
+    const timeInputs = document.getElementById('time-inputs');
+    
+    frequencySelect.addEventListener('change', function() {
+        const count = parseInt(this.value.charAt(0));
+        updateTimeInputs(timeInputs, count);
+    });
+    
+    // Inisialisasi input waktu
+    updateTimeInputs(timeInputs, 1);
+});
+
+function updateTimeInputs(container, count) {
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+        const input = document.createElement('input');
+        input.type = 'time';
+        input.className = 'form-control mb-2';
+        input.name = 'times[]';
+        input.required = true;
+        container.appendChild(input);
+    }
+}
+
+function editReminder(id, medicine_name, dosage, frequency, times, start_date, end_date, notes) {
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    const form = document.getElementById('editForm');
+    
+    // Set action URL
+    form.action = `/medicine-reminder/edit/${id}`;
+    
+    // Set nilai form
+    form.querySelector('[name="medicine_name"]').value = medicine_name;
+    form.querySelector('[name="dosage"]').value = dosage;
+    form.querySelector('[name="frequency"]').value = frequency;
+    form.querySelector('[name="start_date"]').value = start_date;
+    form.querySelector('[name="end_date"]').value = end_date;
+    form.querySelector('[name="notes"]').value = notes;
+    
+    // Update time inputs
+    const timeContainer = document.getElementById('edit-time-inputs');
+    const timeArray = times.split(',');
+    updateTimeInputs(timeContainer, timeArray.length);
+    
+    // Set nilai waktu
+    const timeInputs = timeContainer.querySelectorAll('input[type="time"]');
+    timeArray.forEach((time, index) => {
+        if (timeInputs[index]) {
+            timeInputs[index].value = time.trim();
+        }
+    });
+    
+    modal.show();
+}
+</script>
+{% endblock %}

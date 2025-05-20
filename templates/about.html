@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-shield-plus text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="mt-3">Tentang Health Guard</h2>
+                        <p class="text-muted">Solusi Pemantauan Kesehatan Terpadu</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-stars text-warning me-2"></i>Visi Kami
+                        </h5>
+                        <p>Menjadi platform kesehatan terpercaya yang membantu setiap individu dalam memantau dan mengelola kesehatan mereka secara efektif dan berkelanjutan.</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-bullseye text-danger me-2"></i>Misi Kami
+                        </h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Menyediakan alat pemantauan kesehatan yang mudah digunakan
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Memberikan informasi kesehatan yang akurat dan terpercaya
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Membantu pengguna dalam membuat keputusan kesehatan yang lebih baik
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-gear text-primary me-2"></i>Fitur Utama
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6><i class="bi bi-heart-pulse text-danger me-2"></i>Pemantauan Vital</h6>
+                                        <p class="small text-muted mb-0">Pantau tanda vital seperti tekanan darah, detak jantung, dan suhu tubuh.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6><i class="bi bi-clipboard2-pulse text-success me-2"></i>Riwayat Kesehatan</h6>
+                                        <p class="small text-muted mb-0">Simpan dan pantau riwayat pemeriksaan kesehatan Anda.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6><i class="bi bi-bell text-warning me-2"></i>Pengingat Obat</h6>
+                                        <p class="small text-muted mb-0">Atur pengingat untuk konsumsi obat tepat waktu.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6><i class="bi bi-shield-check text-info me-2"></i>Bantuan Darurat</h6>
+                                        <p class="small text-muted mb-0">Akses cepat ke layanan darurat dan panduan pertolongan pertama.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">
+                            <i class="bi bi-people text-success me-2"></i>Tim Kami
+                        </h5>
+                        <p>Health Guard dikembangkan oleh tim yang berkomitmen untuk memberikan solusi kesehatan terbaik bagi pengguna.</p>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted">Versi 1.0.0</p>
+                        <p class="small">© 2023 Health Guard. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.list-unstyled li {
+    transition: all 0.3s ease;
+}
+
+.list-unstyled li:hover {
+    transform: translateX(10px);
+}
+</style>
+{% endblock %} 
